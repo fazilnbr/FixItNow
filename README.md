@@ -1,4 +1,5 @@
-# Job_Portal_Project
+
+# propals
 This is a REST API Job Portal project for unorganized job sector
 
 
@@ -67,4 +68,3 @@ API DOCUMENTATION-SWAGGER
 
 
 
-# propals
