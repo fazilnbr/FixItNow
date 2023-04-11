@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"fmt"
 
 	"github.com/fazilnbr/project-workey/pkg/domain"
 	interfaces "github.com/fazilnbr/project-workey/pkg/repository/interface"
@@ -45,7 +44,7 @@ func (*userRepo) FindUserWithId(ctx context.Context, id int) (domain.User, error
 // FindUserWithNumber implements interfaces.UserRepository
 func (c *userRepo) FindUserWithNumber(ctx context.Context, phoneNumber string) (domain.User, error) {
 	var user domain.User
-	query := `SELECT * from users WHERE phone=$1;`
+	query := `SELECT id_user, user_name, phone, email, password, user_type, verification, status,profilephoto from users WHERE phone=$1;`
 
 	err := c.db.QueryRow(query,
 		phoneNumber).Scan(
@@ -59,9 +58,8 @@ func (c *userRepo) FindUserWithNumber(ctx context.Context, phoneNumber string) (
 		&user.Status,
 		&user.Profilephoto,
 	)
-	fmt.Println(err)
 	if err != nil && err == sql.ErrNoRows {
-		return user, errors.New("there no user")
+		return user, errors.New("there is no user")
 	}
 
 	return user, err
