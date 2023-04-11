@@ -20,6 +20,25 @@ definitions:
 info:
   contact: {}
 paths:
+  /user/login-gl:
+    get:
+      operationId: Authenticate With Google
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Authenticate With Google
+      tags:
+      - User Authentication
   /user/sent-otp:
     post:
       operationId: sendOtp
