@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/fazilnbr/project-workey/pkg/domain"
 	interfaces "github.com/fazilnbr/project-workey/pkg/repository/interface"
@@ -25,7 +24,6 @@ func (c *userUseCase) RegisterAndVarifyWithEmail(ctx context.Context, email stri
 		Phone:    utils.Randomphone(5),
 		UserName: utils.RandomString(5),
 	})
-	fmt.Printf("\n\nerr : %v\n\n", err)
 	if err != nil {
 		return 0, err
 	}

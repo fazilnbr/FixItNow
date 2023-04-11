@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"fmt"
 
 	"github.com/fazilnbr/project-workey/pkg/domain"
 	interfaces "github.com/fazilnbr/project-workey/pkg/repository/interface"
@@ -33,8 +32,6 @@ func (c *userRepo) CreateUser(ctx context.Context, user domain.User) (int, error
 	).Scan(
 		&id,
 	)
-
-	fmt.Printf("\n\nDBerr : %v\n\n", err)
 
 	return id, err
 }

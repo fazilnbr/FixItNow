@@ -61,7 +61,6 @@ func (cr *AuthHandler) InitializeOAuthGoogle() {
 	oauthConfGl.ClientID = cr.cfg.ClientID
 	oauthConfGl.ClientSecret = cr.cfg.ClientSecret
 	oauthStateStringGl = cr.cfg.OauthStateString
-	fmt.Printf("\n\n%v\n\n", oauthConfGl)
 }
 
 // @Summary Authenticate With Google
@@ -79,7 +78,6 @@ func (cr *AuthHandler) GoogleAuth(c *gin.Context) {
 func HandileLogin(c *gin.Context, oauthConf *oauth2.Config, oauthStateString string) error {
 	URL, err := url.Parse(oauthConf.Endpoint.AuthURL)
 	if err != nil {
-		fmt.Printf("\n\n\nerror in handile login :%v\n\n", err)
 		return err
 	}
 	parameters := url.Values{}
@@ -90,15 +88,12 @@ func HandileLogin(c *gin.Context, oauthConf *oauth2.Config, oauthStateString str
 	parameters.Add("state", oauthStateString)
 	URL.RawQuery = parameters.Encode()
 	url := URL.String()
-	fmt.Printf("\n\nurl : %v\n\n", oauthConf.RedirectURL)
-	// log.Fatal("referesh token not valid")
 	c.Redirect(http.StatusTemporaryRedirect, url)
 	return nil
 
 }
 
 func (cr *AuthHandler) CallBackFromGoogle(ctx *gin.Context) {
-	fmt.Print("\n\nfuck\n\n")
 	ctx.Request.ParseForm()
 	state := ctx.Request.FormValue("state")
 
@@ -142,8 +137,6 @@ func (cr *AuthHandler) CallBackFromGoogle(ctx *gin.Context) {
 		}
 		var gdata data
 		json.Unmarshal(respons, &gdata)
-		fmt.Printf("\n\ndata :%v\n\n", string(respons))
-		fmt.Printf("\n\ndata :%v\n\n", gdata)
 
 		if !gdata.Verified_email {
 			response := utils.ErrorResponse("Failed to Login ", "Your email is not varified by google ", nil)
@@ -202,7 +195,6 @@ func (cr *AuthHandler) CallBackFromGoogle(ctx *gin.Context) {
 // @Failure 422 {object} utils.Response{}
 // @Router /user/sent-otp [post]
 func (cr *AuthHandler) UserSendOTP(ctx *gin.Context) {
-	fmt.Printf("\n\nuser  :  \n\n")
 	var newUser domain.Signup
 
 	err := ctx.Bind(&newUser)
