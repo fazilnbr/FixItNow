@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	// _ "github.com/fazilnbr/project-workey/cmd/api/docs"
+	_ "github.com/fazilnbr/project-workey/cmd/api/docs"
 	_ "github.com/fazilnbr/project-workey/pkg/domain"
 	_ "github.com/fazilnbr/project-workey/pkg/utils"
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 
 	"github.com/fazilnbr/project-workey/pkg/domain"
 	interfaces "github.com/fazilnbr/project-workey/pkg/repository/interface"
@@ -58,7 +59,8 @@ func (c *userRepo) FindUserWithNumber(ctx context.Context, phoneNumber string) (
 		&user.Status,
 		&user.Profilephoto,
 	)
-	if err != nil && err != sql.ErrNoRows {
+	fmt.Println(err)
+	if err != nil && err == sql.ErrNoRows {
 		return user, errors.New("there no user")
 	}
 

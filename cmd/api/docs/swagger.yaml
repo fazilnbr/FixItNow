@@ -1,0 +1,72 @@
+definitions:
+  github_com_fazilnbr_project-workey_pkg_domain.Signup:
+    properties:
+      countrycode:
+        type: string
+      otp:
+        type: string
+      phonenumber:
+        type: string
+    type: object
+  github_com_fazilnbr_project-workey_pkg_utils.Response:
+    properties:
+      data: {}
+      errors: {}
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+info:
+  contact: {}
+paths:
+  /user/sent-otp:
+    post:
+      operationId: sendOtp
+      parameters:
+      - description: Worker Login
+        in: body
+        name: WorkerLogin
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_fazilnbr_project-workey_pkg_domain.Signup'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response'
+      summary: Send OTP for Users
+      tags:
+      - User Authentication
+  /user/signup-and-login:
+    post:
+      operationId: SignUp authentication
+      parameters:
+      - description: Worker Login
+        in: body
+        name: WorkerLogin
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_fazilnbr_project-workey_pkg_domain.Signup'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response'
+      summary: SignUp for users
+      tags:
+      - User Authentication
+      - User Authentication
+swagger: "2.0"

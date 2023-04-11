@@ -23,13 +23,13 @@ func NewServerHTTP(authHandler handler.AuthHandler, adminHandler handler.AdminHa
 
 	// Swagger docs
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	
-	// Group users 
-	user:=engine.Group("user")
-	{
-		user.POST("/signup-or-login", authHandler.UserRegisterAndLogin)
-	}
 
+	// Group users
+	user := engine.Group("user")
+	{
+		user.POST("/sent-otp", authHandler.UserSendOTP)
+		user.POST("/signup-and-login", authHandler.UserRegisterAndLogin)
+	}
 
 	return &ServerHTTP{engine: engine}
 }

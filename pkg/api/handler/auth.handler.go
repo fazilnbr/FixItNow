@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	_ "github.com/fazilnbr/project-workey/cmd/api/docs"
 	"github.com/fazilnbr/project-workey/pkg/config"
 	"github.com/fazilnbr/project-workey/pkg/domain"
 	services "github.com/fazilnbr/project-workey/pkg/usecase/interface"
@@ -44,8 +45,8 @@ func NewAuthHandler(
 // @Tags User Authentication
 // @Produce json
 // @Param WorkerLogin body domain.Signup{} true "Worker Login"
-// @Success 200 {object} response.Response{}
-// @Failure 422 {object} response.Response{}
+// @Success 200 {object} utils.Response{}
+// @Failure 422 {object} utils.Response{}
 // @Router /user/sent-otp [post]
 func (cr *AuthHandler) UserSendOTP(ctx *gin.Context) {
 	fmt.Printf("\n\nuser  :  \n\n")
@@ -81,10 +82,10 @@ func (cr *AuthHandler) UserSendOTP(ctx *gin.Context) {
 // @Tags User Authentication
 // @Produce json
 // @Tags User Authentication
-// @Param WorkerLogin body domain.User{username=string,password=string} true "Worker Login"
-// @Success 200 {object} response.Response{}
-// @Failure 422 {object} response.Response{}
-// @Router /user/login [post]
+// @Param WorkerLogin body domain.Signup{} true "Worker Login"
+// @Success 200 {object} utils.Response{}
+// @Failure 422 {object} utils.Response{}
+// @Router /user/signup-and-login [post]
 func (cr *AuthHandler) UserRegisterAndLogin(ctx *gin.Context) {
 	var newUser domain.Signup
 
@@ -97,8 +98,15 @@ func (cr *AuthHandler) UserRegisterAndLogin(ctx *gin.Context) {
 		return
 	}
 	phoneNumber := fmt.Sprintf(newUser.CountryCode + newUser.PhoneNumber)
+	err = cr.authUseCase.VarifyOTP(ctx, phoneNumber, newUser.Otp)
+	if err != nil {
+		response := utils.ErrorResponse("Invalid OTP", err.Error(), nil)
+		ctx.Writer.Header().Set("Content-Type", "application/json")
+		ctx.Writer.WriteHeader(http.StatusUnprocessableEntity)
+		utils.ResponseJSON(*ctx, response)
+		return
+	}
 	userId, err := cr.userUseCase.RegisterAndVarify(ctx, phoneNumber)
-
 	if err != nil {
 		response := utils.ErrorResponse("Failed to create user", err.Error(), nil)
 		ctx.Writer.Header().Set("Content-Type", "application/json")
