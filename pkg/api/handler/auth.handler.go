@@ -39,12 +39,11 @@ func NewAuthHandler(
 	}
 }
 
-// @Summary SignUp for users
-// @ID SignUp authentication
+// @Summary Send OTP for Users
+// @ID sendOtp
 // @Tags User Authentication
 // @Produce json
-// @Tags User Authentication
-// @Param WorkerLogin body domain.User{username=string,password=string} true "Worker Login"
+// @Param WorkerLogin body domain.Signup{} true "Worker Login"
 // @Success 200 {object} response.Response{}
 // @Failure 422 {object} response.Response{}
 // @Router /user/sent-otp [post]
@@ -61,10 +60,10 @@ func (cr *AuthHandler) UserSendOTP(ctx *gin.Context) {
 		return
 	}
 	phoneNumber := fmt.Sprintf(newUser.CountryCode + newUser.PhoneNumber)
-	_, err = cr.userUseCase.RegisterAndVarify(ctx, phoneNumber)
+	err = cr.authUseCase.SendOTP(ctx, phoneNumber)
 
 	if err != nil {
-		response := utils.ErrorResponse("Failed to create user", err.Error(), nil)
+		response := utils.ErrorResponse("Error while sending OTP to user", err.Error(), nil)
 		ctx.Writer.Header().Set("Content-Type", "application/json")
 		ctx.Writer.WriteHeader(http.StatusUnprocessableEntity)
 		utils.ResponseJSON(*ctx, response)
@@ -86,7 +85,7 @@ func (cr *AuthHandler) UserSendOTP(ctx *gin.Context) {
 // @Success 200 {object} response.Response{}
 // @Failure 422 {object} response.Response{}
 // @Router /user/login [post]
-func (cr *AuthHandler) UserLogin(ctx *gin.Context) {
+func (cr *AuthHandler) UserRegisterAndLogin(ctx *gin.Context) {
 	var newUser domain.Signup
 
 	err := ctx.Bind(&newUser)

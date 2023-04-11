@@ -27,7 +27,7 @@ func NewServerHTTP(authHandler handler.AuthHandler, adminHandler handler.AdminHa
 	// Group users 
 	user:=engine.Group("user")
 	{
-		user.POST("/signup-or-login", authHandler.UserSignUp)
+		user.POST("/signup-or-login", authHandler.UserRegisterAndLogin)
 	}
 
 
