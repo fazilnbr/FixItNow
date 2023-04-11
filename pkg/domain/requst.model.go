@@ -1,9 +1,7 @@
 package domain
 
-type RazorPayVariables struct {
-	OrderId string
-	Email   string
-	Name    string
-	Amount  int
-	Contact string
+type Signup struct {
+	CountryCode string `json:"countrycode"`
+	PhoneNumber string `json:"phonenumber"`
+	Otp         string `json:"otp"`
 }

@@ -20,21 +20,15 @@ func ConnectGormDB(cfg config.Config) (*gorm.DB, error) {
 
 	db.AutoMigrate(
 		&domain.User{},
-		&domain.Profile{},
-		&domain.Verification{},
+		&domain.Address{},
 		&domain.Category{},
 		&domain.Job{},
-		&domain.Favorite{},
-		&domain.Address{},
 		&domain.Request{},
-		&domain.JobPayment{},
+		&domain.Favorite{},
+		&domain.Verification{},
+		&domain.Ratings{},
+		&domain.Banner{},
 	)
-
-	// db.AutoMigrate(&domain.Login{})
-	// db.AutoMigrate(&domain.Profile{})
-	// db.AutoMigrate(&domain.Verification{})
-	// db.AutoMigrate(&domain.Category{})
-	// db.AutoMigrate(&domain.Job{})
 
 	return db, dbErr
 }
