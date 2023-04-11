@@ -23,7 +23,6 @@ FROM alpine:3.16
 WORKDIR /Job-Portal
 COPY go.mod .
 COPY go.sum .
-COPY views ./views
 COPY --from=builder /Job-Portal/build/bin/api .
 
 
