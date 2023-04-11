@@ -22,7 +22,7 @@ func init() {
 // RandomInt generate randome inteager value between min and max
 
 func RandomInt(min, max int) int {
-	return min + rand.Intn(max-min+1)
+	return (min + rand.Intn(max-min+1))
 
 }
 
@@ -35,7 +35,26 @@ func RandomString(num int) string {
 		c := alpabet[rand.Intn(k)]
 		sb.WriteByte(c)
 	}
-	return sb.String()
+	return "test" + sb.String()
+}
+
+func Randommail(num int) string {
+	var sb strings.Builder
+	k := len(alpabet)
+	for i := 0; i < num; i++ {
+		c := alpabet[rand.Intn(k)]
+		sb.WriteByte(c)
+	}
+	return "test" + sb.String() + "@test.com"
+}
+func Randomphone(num int) string {
+	var sb strings.Builder
+	k := len(alpabet)
+	for i := 0; i < num; i++ {
+		c := alpabet[rand.Intn(k)]
+		sb.WriteByte(c)
+	}
+	return "testphone" + sb.String()
 }
 
 func MockGormDB() (*sql.DB, sqlmock.Sqlmock) {

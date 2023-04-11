@@ -9,5 +9,5 @@ import (
 type UserRepository interface {
 	CreateUser(ctx context.Context, user domain.User) (int, error)
 	FindUserWithNumber(ctx context.Context, phoneNumber string) (domain.User, error)
-	FindUserWithId(ctx context.Context, id int) (domain.User, error)
+	FindUserWithEmail(ctx context.Context, email string) (domain.User, error)
 }

@@ -5,5 +5,6 @@ import (
 )
 
 type UserUseCase interface {
-	RegisterAndVarify(ctx context.Context, phoneNumber string) (int, error)
+	RegisterAndVarifyWithNumber(ctx context.Context, phoneNumber string) (int, error)
+	RegisterAndVarifyWithEmail(ctx context.Context, email string) (int, error)
 }
