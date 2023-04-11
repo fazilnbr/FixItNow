@@ -23,7 +23,13 @@ func NewServerHTTP(authHandler handler.AuthHandler, adminHandler handler.AdminHa
 
 	// Swagger docs
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	// Refresh Token
+	
+	// Group users 
+	user:=engine.Group("user")
+	{
+		user.POST("/signup-or-login", authHandler.UserSignUp)
+	}
+
 
 	return &ServerHTTP{engine: engine}
 }

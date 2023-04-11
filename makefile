@@ -39,12 +39,6 @@ deps-cleancache: ## Clear cache in Go module
 wire: ## Generate wire_gen.go
 	cd pkg/di && wire
 
-# swag: ## Generate swagger docs
-# 	swag init -g pkg/api/middleware/auth.handler.go -o cmd/api/docs
-
-# swag:## Genarate swagger docs
-# 	cd cmd/api && swag init --parseDependency --parseInternal --parseDepth 1 -md ./documentation -o ./docs
-
 swag: ## Generate swagger2 docs
 	swag init -g pkg/api/handler/auth.handler.go --parseDependency -o ./cmd/api/docs
 
