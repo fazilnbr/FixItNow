@@ -50,7 +50,7 @@ var (
 	oauthConfGl = &oauth2.Config{
 		ClientID:     "",
 		ClientSecret: "",
-		RedirectURL:  "http://localhost:8080/user/callback-gl",
+		RedirectURL:  "http://fazilnbr.online/user/callback-gl",
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
 		Endpoint:     google.Endpoint,
 	}
