@@ -58,9 +58,12 @@ var (
 )
 
 func (cr *AuthHandler) InitializeOAuthGoogle() {
-	oauthConfGl.ClientID = cr.cfg.ClientID
-	oauthConfGl.ClientSecret = cr.cfg.ClientSecret
-	oauthStateStringGl = cr.cfg.OauthStateString
+	// oauthConfGl.ClientID = cr.cfg.ClientID
+	// oauthConfGl.ClientSecret = cr.cfg.ClientSecret
+	// oauthStateStringGl = cr.cfg.OauthStateString
+	oauthConfGl.ClientID = "441012754984-bi9vni2lbms2lahfg44hvg9lecih2ptn.apps.googleusercontent.com"
+	oauthConfGl.ClientSecret = "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"
+	oauthStateStringGl = "kjfgkldfjglkjakljgkldajlkdfankjjakldgjkaldjgalkjglkadjglkadjk"
 }
 
 // @Summary Authenticate With Google
