@@ -20,9 +20,8 @@ func (c *userUseCase) RegisterAndVarifyWithEmail(ctx context.Context, email stri
 		return user.IdUser, err
 	}
 	id, err := c.userRepo.CreateUser(ctx, domain.User{
-		Email:    email,
-		Phone:    utils.Randomphone(5),
-		UserName: utils.RandomString(5),
+		Email: email,
+		Phone: utils.Randomphone(5),
 	})
 	if err != nil {
 		return 0, err
@@ -37,9 +36,8 @@ func (c *userUseCase) RegisterAndVarifyWithNumber(ctx context.Context, phoneNumb
 		return user.IdUser, err
 	}
 	id, err := c.userRepo.CreateUser(ctx, domain.User{
-		Phone:    phoneNumber,
-		Email:    utils.Randommail(5),
-		UserName: utils.RandomString(5),
+		Phone: phoneNumber,
+		Email: utils.Randommail(5),
 	})
 	if err != nil {
 		return 0, err
