@@ -279,12 +279,10 @@ func (cr *AuthHandler) UserRegisterAndLogin(ctx *gin.Context) {
 		return
 	}
 
-	userResponse := domain.UserResponse{
-		AccessToken:  accessToken,
-		RefreshToken: refreshToken,
-	}
+	ctx.Writer.Header().Set("access-token", accessToken)
+	ctx.Writer.Header().Set("refresh-token", refreshToken)
 
-	response := utils.SuccessResponse(true, "SUCCESS", userResponse)
+	response := utils.SuccessResponse(true, "SUCCESS", nil)
 	ctx.Writer.Header().Set("Content-Type", "application/json")
 	ctx.Writer.WriteHeader(http.StatusOK)
 	utils.ResponseJSON(*ctx, response)
