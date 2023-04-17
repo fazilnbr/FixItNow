@@ -63,6 +63,67 @@ func (cr *AuthHandler) InitializeOAuthGoogle() {
 	oauthStateStringGl = cr.cfg.OauthStateString
 }
 
+// @Summary Refresh The Token
+// @ID Refresh token
+// @Tags User Authentication
+// @Security BearerAuth
+// @Produce json
+// @Success 200 {object} utils.Response{}
+// @Failure 422 {object} utils.Response{}
+// @Router /refresh-tocken [get]
+func (cr *AuthHandler) RefreshToken(ctx *gin.Context) {
+
+	autheader := ctx.Request.Header["Authorization"]
+	auth := strings.Join(autheader, " ")
+	bearerToken := strings.Split(auth, " ")
+	if autheader == nil || len(bearerToken) < 2 {
+		response := utils.ErrorResponse("Request does't condain Refresh token", "", nil)
+		ctx.Writer.Header().Add("Content-Type", "application/json")
+		ctx.Writer.WriteHeader(http.StatusUnprocessableEntity)
+		utils.ResponseJSON(*ctx, response)
+		return
+	}
+	fmt.Printf("\n\ntocen : %v\n\n", autheader)
+	token := bearerToken[1]
+	ok, claims := cr.jwtUseCase.VerifyToken(token)
+	if !ok {
+		response := utils.ErrorResponse("Your Refresh token is not valid Login again", "", nil)
+		ctx.Writer.Header().Add("Content-Type", "application/json")
+		ctx.Writer.WriteHeader(http.StatusUnprocessableEntity)
+		utils.ResponseJSON(*ctx, response)
+		return
+	}
+
+	fmt.Println("//////////////////////////////////", claims.UserName)
+	accesstoken, err := cr.jwtUseCase.GenerateAccessToken(claims.UserId, claims.UserName, claims.Role)
+
+	if err != nil {
+		response := utils.ErrorResponse("Failed to generating access token please login again", err.Error(), nil)
+		ctx.Writer.Header().Add("Content-Type", "application/json")
+		ctx.Writer.WriteHeader(http.StatusUnprocessableEntity)
+		utils.ResponseJSON(*ctx, response)
+		return
+	}
+
+	refreshToken, err := cr.jwtUseCase.GenerateRefreshToken(claims.UserId, claims.UserName, claims.Role)
+	if err != nil {
+		response := utils.ErrorResponse("Failed to generating refresh token please login again", err.Error(), nil)
+		ctx.Writer.Header().Add("Content-Type", "application/json")
+		ctx.Writer.WriteHeader(http.StatusUnprocessableEntity)
+		utils.ResponseJSON(*ctx, response)
+		return
+	}
+
+	ctx.Writer.Header().Set("access-token", accesstoken)
+	ctx.Writer.Header().Set("refresh-token", refreshToken)
+
+	response := utils.SuccessResponse(true, "SUCCESS", nil)
+	ctx.Writer.Header().Add("Content-Type", "application/json")
+	ctx.Writer.WriteHeader(http.StatusOK)
+	utils.ResponseJSON(*ctx, response)
+
+}
+
 // @Summary Authenticate With Google
 // @ID Authenticate With Google
 // @Tags User Authentication
