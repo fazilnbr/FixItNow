@@ -13,6 +13,12 @@ type userUseCase struct {
 	userRepo interfaces.UserRepository
 }
 
+// GetProfile implements interfaces.UserUseCase
+func (c *userUseCase) GetProfile(ctx context.Context, userId int) (domain.Profile, error) {
+	profile, err := c.userRepo.GetProfile(ctx, userId)
+	return profile, err
+}
+
 // UpdateMail implements interfaces.UserUseCase
 func (c *userUseCase) UpdateMail(ctx context.Context, email string, userId int) error {
 	err := c.userRepo.UpdateMail(ctx, email, userId)
