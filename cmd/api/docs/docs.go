@@ -16,7 +16,38 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/user/add-profile": {
+        "/user/login-gl": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Authentication"
+                ],
+                "summary": "Authenticate With Google",
+                "operationId": "Authenticate With Google",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/profile": {
             "post": {
                 "security": [
                     {
@@ -42,37 +73,6 @@ const docTemplate = `{
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response"
-                        }
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/login-gl": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User Authentication"
-                ],
-                "summary": "Authenticate With Google",
-                "operationId": "Authenticate With Google",
                 "responses": {
                     "200": {
                         "description": "OK",

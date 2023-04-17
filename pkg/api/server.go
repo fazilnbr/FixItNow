@@ -39,7 +39,8 @@ func NewServerHTTP(authHandler handler.AuthHandler, adminHandler handler.AdminHa
 		// Use Middileware
 		user.Use(middleware.AthoriseJWT)
 
-		user.POST("/add-profile", UserHandler.AddProfileAndUpdateMail)
+		user.POST("/profile", UserHandler.AddProfileAndUpdateMail)
+		user.GET("/profile", UserHandler.GetUserProfile)
 	}
 
 	return &ServerHTTP{engine: engine}
