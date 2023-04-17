@@ -63,13 +63,13 @@ func (cr *AuthHandler) InitializeOAuthGoogle() {
 	oauthStateStringGl = cr.cfg.OauthStateString
 }
 
-// @Summary Refresh The Access Token
-// @ID Refresh access token
-// @Tags Refresh Token
+// @Summary Refresh The Token
+// @ID Refresh token
+// @Tags User Authentication
 // @Security BearerAuth
 // @Produce json
-// @Success 200 {object} response.Response{}
-// @Failure 422 {object} response.Response{}
+// @Success 200 {object} utils.Response{}
+// @Failure 422 {object} utils.Response{}
 // @Router /refresh-tocken [get]
 func (cr *AuthHandler) RefreshToken(ctx *gin.Context) {
 

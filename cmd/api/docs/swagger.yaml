@@ -39,6 +39,25 @@ definitions:
 info:
   contact: {}
 paths:
+  /refresh-tocken:
+    get:
+      operationId: Refresh token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Refresh The Token
+      tags:
+      - User Authentication
   /user/login-gl:
     get:
       operationId: Authenticate With Google
