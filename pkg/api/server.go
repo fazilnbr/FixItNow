@@ -35,6 +35,11 @@ func NewServerHTTP(authHandler handler.AuthHandler, adminHandler handler.AdminHa
 		// Google authentication
 		user.GET("/login-gl", authHandler.GoogleAuth)
 		user.GET("/callback-gl", authHandler.CallBackFromGoogle)
+
+		// Use Middileware
+		user.Use(middleware.AthoriseJWT)
+
+		user.POST("/add-profile", UserHandler.AddProfileAndUpdateMail)
 	}
 
 	return &ServerHTTP{engine: engine}

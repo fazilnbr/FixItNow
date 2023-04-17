@@ -21,8 +21,8 @@ func TestUserRepo_FindUserWithNumber(t *testing.T) {
 
 	userRepo := repository.NewUserRepo(db)
 
-	rows := sqlmock.NewRows([]string{"id_user", "user_name", "phone", "email", "password", "user_type", "verification", "status", "profilephoto"}).
-		AddRow(0, "user_name", "1", "email", "password", "user_type", true, "status", "profilephoto")
+	rows := sqlmock.NewRows([]string{"id_user", "phone", "email", "password", "user_type", "verification", "status"}).
+		AddRow(0, "1", "email", "password", "user_type", true, "status")
 
 	tests := []struct {
 		name          string
@@ -35,7 +35,7 @@ func TestUserRepo_FindUserWithNumber(t *testing.T) {
 			name:        "there is no user in database",
 			phoneNumber: "1",
 			mockQueryFunc: func() {
-				mock.ExpectQuery("SELECT id_user, user_name, phone, email, password, user_type, verification, status,profilephoto from users WHERE phone=\\$1;").
+				mock.ExpectQuery("SELECT id_user, phone, email, password, user_type, verification, status from users WHERE phone=\\$1;").
 					WithArgs("1").
 					WillReturnError(sql.ErrNoRows)
 			},
@@ -46,7 +46,7 @@ func TestUserRepo_FindUserWithNumber(t *testing.T) {
 			name:        "found user from database",
 			phoneNumber: "1",
 			mockQueryFunc: func() {
-				mock.ExpectQuery("SELECT id_user, user_name, phone, email, password, user_type, verification, status,profilephoto from users WHERE phone=\\$1;").
+				mock.ExpectQuery("SELECT id_user, phone, email, password, user_type, verification, status from users WHERE phone=\\$1;").
 					WithArgs("1").
 					WillReturnRows(rows)
 			},
@@ -57,7 +57,7 @@ func TestUserRepo_FindUserWithNumber(t *testing.T) {
 			name:        "DB error",
 			phoneNumber: "1",
 			mockQueryFunc: func() {
-				mock.ExpectQuery("SELECT id_user, user_name, phone, email, password, user_type, verification, status,profilephoto from users WHERE phone=\\$1;").
+				mock.ExpectQuery("SELECT id_user, phone, email, password, user_type, verification, status from users WHERE phone=\\$1;").
 					WithArgs("1").
 					WillReturnError(errors.New("DB error"))
 			},
@@ -91,8 +91,8 @@ func TestUserRepo_FindUserWithemail(t *testing.T) {
 
 	userRepo := repository.NewUserRepo(db)
 
-	rows := sqlmock.NewRows([]string{"id_user", "user_name", "phone", "email", "password", "user_type", "verification", "status", "profilephoto"}).
-		AddRow(0, "user_name", "phone", "jon@gmail.com", "password", "user_type", true, "status", "profilephoto")
+	rows := sqlmock.NewRows([]string{"id_user", "phone", "email", "password", "user_type", "verification", "status"}).
+		AddRow(0,  "phone", "jon@gmail.com", "password", "user_type", true, "status")
 
 	tests := []struct {
 		name          string
@@ -105,7 +105,7 @@ func TestUserRepo_FindUserWithemail(t *testing.T) {
 			name:  "there is no user in database",
 			email: "jon@gmail.com",
 			mockQueryFunc: func() {
-				mock.ExpectQuery("SELECT id_user, user_name, phone, email, password, user_type, verification, status,profilephoto from users WHERE email=\\$1;").
+				mock.ExpectQuery("SELECT id_user, phone, email, password, user_type, verification, status from users WHERE email=\\$1;").
 					WithArgs("jon@gmail.com").
 					WillReturnError(sql.ErrNoRows)
 			},
@@ -116,7 +116,7 @@ func TestUserRepo_FindUserWithemail(t *testing.T) {
 			name:  "found user from database",
 			email: "jon@gmail.com",
 			mockQueryFunc: func() {
-				mock.ExpectQuery("SELECT id_user, user_name, phone, email, password, user_type, verification, status,profilephoto from users WHERE email=\\$1;").
+				mock.ExpectQuery("SELECT id_user, phone, email, password, user_type, verification, status from users WHERE email=\\$1;").
 					WithArgs("jon@gmail.com").
 					WillReturnRows(rows)
 			},
@@ -127,7 +127,7 @@ func TestUserRepo_FindUserWithemail(t *testing.T) {
 			name:  "DB error",
 			email: "jon@gmail.com",
 			mockQueryFunc: func() {
-				mock.ExpectQuery("SELECT id_user, user_name, phone, email, password, user_type, verification, status,profilephoto from users WHERE email=\\$1;").
+				mock.ExpectQuery("SELECT id_user, phone, email, password, user_type, verification, status from users WHERE email=\\$1;").
 					WithArgs("jon@gmail.com").
 					WillReturnError(errors.New("DB error"))
 			},

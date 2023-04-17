@@ -58,12 +58,9 @@ var (
 )
 
 func (cr *AuthHandler) InitializeOAuthGoogle() {
-	// oauthConfGl.ClientID = cr.cfg.ClientID
-	// oauthConfGl.ClientSecret = cr.cfg.ClientSecret
-	// oauthStateStringGl = cr.cfg.OauthStateString
-	oauthConfGl.ClientID = "441012754984-bi9vni2lbms2lahfg44hvg9lecih2ptn.apps.googleusercontent.com"
-	oauthConfGl.ClientSecret = "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"
-	oauthStateStringGl = "kjfgkldfjglkjakljgkldajlkdfankjjakldgjkaldjgalkjglkadjglkadjk"
+	oauthConfGl.ClientID = cr.cfg.ClientID
+	oauthConfGl.ClientSecret = cr.cfg.ClientSecret
+	oauthStateStringGl = cr.cfg.OauthStateString
 }
 
 // @Summary Authenticate With Google
@@ -193,7 +190,7 @@ func (cr *AuthHandler) CallBackFromGoogle(ctx *gin.Context) {
 // @ID sendOtp
 // @Tags User Authentication
 // @Produce json
-// @Param WorkerLogin body domain.Signup{} true "Worker Login"
+// @Param mobileNumber body domain.Signup{} true "Mobile Number"
 // @Success 200 {object} utils.Response{}
 // @Failure 422 {object} utils.Response{}
 // @Router /user/sent-otp [post]
@@ -229,8 +226,7 @@ func (cr *AuthHandler) UserSendOTP(ctx *gin.Context) {
 // @ID SignUp authentication
 // @Tags User Authentication
 // @Produce json
-// @Tags User Authentication
-// @Param WorkerLogin body domain.Signup{} true "Worker Login"
+// @Param mobileNumberAndOTP body domain.Signup{} true "Mobile Number And OTP"
 // @Success 200 {object} utils.Response{}
 // @Failure 422 {object} utils.Response{}
 // @Router /user/signup-and-login [post]
@@ -239,7 +235,7 @@ func (cr *AuthHandler) UserRegisterAndLogin(ctx *gin.Context) {
 
 	err := ctx.Bind(&newUser)
 	if err != nil {
-		response := utils.ErrorResponse("Failed to create user", err.Error(), nil)
+		response := utils.ErrorResponse("Failed to Fetch Data", err.Error(), nil)
 		ctx.Writer.Header().Set("Content-Type", "application/json")
 		ctx.Writer.WriteHeader(http.StatusBadRequest)
 		utils.ResponseJSON(*ctx, response)
@@ -282,12 +278,10 @@ func (cr *AuthHandler) UserRegisterAndLogin(ctx *gin.Context) {
 		return
 	}
 
-	userResponse := domain.UserResponse{
-		AccessToken:  accessToken,
-		RefreshToken: refreshToken,
-	}
+	ctx.Writer.Header().Set("access-token", accessToken)
+	ctx.Writer.Header().Set("refresh-token", refreshToken)
 
-	response := utils.SuccessResponse(true, "SUCCESS", userResponse)
+	response := utils.SuccessResponse(true, "SUCCESS", nil)
 	ctx.Writer.Header().Set("Content-Type", "application/json")
 	ctx.Writer.WriteHeader(http.StatusOK)
 	utils.ResponseJSON(*ctx, response)
