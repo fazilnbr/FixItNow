@@ -14,6 +14,33 @@ type UserHandler struct {
 	userUseCase services.UserUseCase
 }
 
+// @Summary Get User Profile
+// @ID GetUserProfile
+// @Tags User Profile Management
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} utils.Response{}
+// @Failure 422 {object} utils.Response{}
+// @Router /user/profile [post]
+func (c *UserHandler) GetUserProfile(ctx *gin.Context) {
+
+	id, _ := strconv.Atoi(ctx.Writer.Header().Get("id"))
+
+	profile, err := c.userUseCase.GetProfile(ctx, id)
+
+	if err != nil {
+		response := utils.ErrorResponse("Failed to Update User Email", err.Error(), nil)
+		ctx.Writer.Header().Set("Content-Type", "application/json")
+		ctx.Writer.WriteHeader(http.StatusUnprocessableEntity)
+		utils.ResponseJSON(*ctx, response)
+		return
+	}
+	response := utils.SuccessResponse(true, "SUCCESS", profile)
+	ctx.Writer.Header().Set("Content-Type", "application/json")
+	ctx.Writer.WriteHeader(http.StatusOK)
+	utils.ResponseJSON(*ctx, response)
+}
+
 // @Summary Add User Profile And Update Mail
 // @ID AddProfileAndUpdateMail
 // @Tags User Profile Management
@@ -22,7 +49,7 @@ type UserHandler struct {
 // @Param userData body domain.UserData{} true "User Data"
 // @Success 200 {object} utils.Response{}
 // @Failure 422 {object} utils.Response{}
-// @Router /user/add-profile [post]
+// @Router /user/profile [post]
 func (c *UserHandler) AddProfileAndUpdateMail(ctx *gin.Context) {
 	var userData domain.UserData
 	id, _ := strconv.Atoi(ctx.Writer.Header().Get("id"))
