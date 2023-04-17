@@ -16,6 +16,48 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/user/add-profile": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Profile Management"
+                ],
+                "summary": "Add User Profile And Update Mail",
+                "operationId": "AddProfileAndUpdateMail",
+                "parameters": [
+                    {
+                        "description": "User Data",
+                        "name": "userData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_fazilnbr_project-workey_pkg_domain.UserData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/user/login-gl": {
             "get": {
                 "security": [
@@ -59,8 +101,8 @@ const docTemplate = `{
                 "operationId": "sendOtp",
                 "parameters": [
                     {
-                        "description": "Worker Login",
-                        "name": "WorkerLogin",
+                        "description": "Mobile Number",
+                        "name": "mobileNumber",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -90,15 +132,14 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User Authentication",
                     "User Authentication"
                 ],
                 "summary": "SignUp for users",
                 "operationId": "SignUp authentication",
                 "parameters": [
                     {
-                        "description": "Worker Login",
-                        "name": "WorkerLogin",
+                        "description": "Mobile Number And OTP",
+                        "name": "mobileNumberAndOTP",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -135,6 +176,35 @@ const docTemplate = `{
                 },
                 "phonenumber": {
                     "type": "string"
+                }
+            }
+        },
+        "github_com_fazilnbr_project-workey_pkg_domain.UserData": {
+            "type": "object",
+            "required": [
+                "profilephoto"
+            ],
+            "properties": {
+                "dob": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "profilephoto": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
                 }
             }
         },

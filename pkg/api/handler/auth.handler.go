@@ -190,7 +190,7 @@ func (cr *AuthHandler) CallBackFromGoogle(ctx *gin.Context) {
 // @ID sendOtp
 // @Tags User Authentication
 // @Produce json
-// @Param WorkerLogin body domain.Signup{} true "Worker Login"
+// @Param mobileNumber body domain.Signup{} true "Mobile Number"
 // @Success 200 {object} utils.Response{}
 // @Failure 422 {object} utils.Response{}
 // @Router /user/sent-otp [post]
@@ -226,8 +226,7 @@ func (cr *AuthHandler) UserSendOTP(ctx *gin.Context) {
 // @ID SignUp authentication
 // @Tags User Authentication
 // @Produce json
-// @Tags User Authentication
-// @Param WorkerLogin body domain.Signup{} true "Worker Login"
+// @Param mobileNumberAndOTP body domain.Signup{} true "Mobile Number And OTP"
 // @Success 200 {object} utils.Response{}
 // @Failure 422 {object} utils.Response{}
 // @Router /user/signup-and-login [post]
@@ -236,7 +235,7 @@ func (cr *AuthHandler) UserRegisterAndLogin(ctx *gin.Context) {
 
 	err := ctx.Bind(&newUser)
 	if err != nil {
-		response := utils.ErrorResponse("Failed to create user", err.Error(), nil)
+		response := utils.ErrorResponse("Failed to Fetch Data", err.Error(), nil)
 		ctx.Writer.Header().Set("Content-Type", "application/json")
 		ctx.Writer.WriteHeader(http.StatusBadRequest)
 		utils.ResponseJSON(*ctx, response)
