@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -21,7 +22,7 @@ type UserHandler struct {
 // @Security BearerAuth
 // @Success 200 {object} utils.Response{}
 // @Failure 422 {object} utils.Response{}
-// @Router /user/profile [post]
+// @Router /user/profile [get]
 func (c *UserHandler) GetUserProfile(ctx *gin.Context) {
 
 	id, _ := strconv.Atoi(ctx.Writer.Header().Get("id"))
@@ -53,6 +54,8 @@ func (c *UserHandler) GetUserProfile(ctx *gin.Context) {
 func (c *UserHandler) AddProfileAndUpdateMail(ctx *gin.Context) {
 	var userData domain.UserData
 	id, _ := strconv.Atoi(ctx.Writer.Header().Get("id"))
+
+	fmt.Println("userId ; ", id)
 
 	err := ctx.Bind(&userData)
 	if err != nil {

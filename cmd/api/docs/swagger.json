@@ -1,9 +1,54 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "This is a simple Job Portal server. You can visit the GitHub repository at https://github.com/fazilnbr/FixItNow",
+        "title": "Go + Gin FixItNow API",
+        "contact": {
+            "name": "API Support",
+            "url": "https://fazilnbr.github.io/mypeosolal.web.portfolio/",
+            "email": "fazilkp2000@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0"
     },
     "paths": {
+<<<<<<< Updated upstream
+=======
+        "/refresh-token": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Authentication"
+                ],
+                "summary": "Refresh The Token",
+                "operationId": "Refresh token",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response"
+                        }
+                    }
+                }
+            }
+        },
+>>>>>>> Stashed changes
         "/user/login-gl": {
             "get": {
                 "security": [
@@ -36,6 +81,35 @@
             }
         },
         "/user/profile": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Profile Management"
+                ],
+                "summary": "Get User Profile",
+                "operationId": "GetUserProfile",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -208,6 +282,13 @@
                     "type": "boolean"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }
