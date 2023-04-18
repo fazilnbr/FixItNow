@@ -107,7 +107,7 @@ paths:
       tags:
       - User Profile Management
     post:
-      operationId: AddProfileAndUpdateMail
+      operationId: AddUserProfileAndUpdateMail
       parameters:
       - description: User Data
         in: body
