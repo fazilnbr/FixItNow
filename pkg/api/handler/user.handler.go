@@ -43,7 +43,7 @@ func (c *UserHandler) GetUserProfile(ctx *gin.Context) {
 }
 
 // @Summary Add User Profile And Update Mail
-// @ID AddProfileAndUpdateMail
+// @ID AddUserProfileAndUpdateMail
 // @Tags User Profile Management
 // @Produce json
 // @Security BearerAuth

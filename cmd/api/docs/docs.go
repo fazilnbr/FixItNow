@@ -129,7 +129,7 @@ const docTemplate = `{
                     "User Profile Management"
                 ],
                 "summary": "Add User Profile And Update Mail",
-                "operationId": "AddProfileAndUpdateMail",
+                "operationId": "AddUserProfileAndUpdateMail",
                 "parameters": [
                     {
                         "description": "User Data",
