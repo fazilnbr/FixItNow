@@ -24,8 +24,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-<<<<<<< Updated upstream
-=======
         "/refresh-token": {
             "get": {
                 "security": [
@@ -57,7 +55,6 @@ const docTemplate = `{
                 }
             }
         },
->>>>>>> Stashed changes
         "/user/login-gl": {
             "get": {
                 "security": [

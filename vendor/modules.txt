@@ -1,4 +1,4 @@
-# cloud.google.com/go/compute v1.19.0
+# cloud.google.com/go/compute v1.19.1
 ## explicit; go 1.19
 cloud.google.com/go/compute/internal
 # cloud.google.com/go/compute/metadata v0.2.3
@@ -146,7 +146,7 @@ github.com/klauspost/cpuid/v2
 # github.com/leodido/go-urn v1.2.3
 ## explicit; go 1.16
 github.com/leodido/go-urn
-# github.com/lib/pq v1.10.7
+# github.com/lib/pq v1.10.8
 ## explicit; go 1.13
 github.com/lib/pq
 github.com/lib/pq/oid

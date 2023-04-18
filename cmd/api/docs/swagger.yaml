@@ -49,8 +49,6 @@ info:
   title: Go + Gin FixItNow API
   version: "1.0"
 paths:
-<<<<<<< Updated upstream
-=======
   /refresh-token:
     get:
       operationId: Refresh token
@@ -70,7 +68,6 @@ paths:
       summary: Refresh The Token
       tags:
       - User Authentication
->>>>>>> Stashed changes
   /user/login-gl:
     get:
       operationId: Authenticate With Google

@@ -15,8 +15,6 @@
         "version": "1.0"
     },
     "paths": {
-<<<<<<< Updated upstream
-=======
         "/refresh-token": {
             "get": {
                 "security": [
@@ -48,7 +46,6 @@
                 }
             }
         },
->>>>>>> Stashed changes
         "/user/login-gl": {
             "get": {
                 "security": [
