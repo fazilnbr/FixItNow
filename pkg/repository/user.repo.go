@@ -20,8 +20,12 @@ func (c *userRepo) GetProfile(ctx context.Context, userId int) (domain.Profile, 
 	err := c.db.QueryRow(query,
 		userId).Scan(
 		&userProfile.IdProfie,
-		userProfile.UserId,
-		
+		&userProfile.UserId,
+		&userProfile.FirstName,
+		&userProfile.LastName,
+		&userProfile.Gender,
+		&userProfile.Dob,
+		&userProfile.ProfilePhoto,
 	)
 	if err != nil && err == sql.ErrNoRows {
 		return userProfile, errors.New("there is no user")
@@ -33,7 +37,7 @@ func (c *userRepo) GetProfile(ctx context.Context, userId int) (domain.Profile, 
 // UpdateMail implements interfaces.UserRepository
 func (c *userRepo) UpdateMail(ctx context.Context, mail string, userId int) error {
 	var id int
-	query := `update users set email = $1 where id_user=$2 RETURNING id_profie;`
+	query := `update users set email = $1 where id_user=$2 RETURNING id_user;`
 
 	err := c.db.QueryRow(query,
 		mail,

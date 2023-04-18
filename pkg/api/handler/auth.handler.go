@@ -63,6 +63,24 @@ func (cr *AuthHandler) InitializeOAuthGoogle() {
 	oauthStateStringGl = cr.cfg.OauthStateString
 }
 
+// @title Go + Gin FixItNow API
+// @version 1.0
+// @description This is a simple Job Portal server. You can visit the GitHub repository at https://github.com/fazilnbr/FixItNow
+
+// @contact.name API Support
+// @contact.url https://fazilnbr.github.io/mypeosolal.web.portfolio/
+// @contact.email fazilkp2000@gmail.com
+
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @host localhost:9090
+// @BasePath /
+// @query.collection.format multi
+
 // @Summary Refresh The Token
 // @ID Refresh token
 // @Tags User Authentication
@@ -70,7 +88,7 @@ func (cr *AuthHandler) InitializeOAuthGoogle() {
 // @Produce json
 // @Success 200 {object} utils.Response{}
 // @Failure 422 {object} utils.Response{}
-// @Router /refresh-tocken [get]
+// @Router /refresh-token [get]
 func (cr *AuthHandler) RefreshToken(ctx *gin.Context) {
 
 	autheader := ctx.Request.Header["Authorization"]

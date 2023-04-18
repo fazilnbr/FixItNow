@@ -37,9 +37,19 @@ definitions:
         type: boolean
     type: object
 info:
-  contact: {}
+  contact:
+    email: fazilkp2000@gmail.com
+    name: API Support
+    url: https://fazilnbr.github.io/mypeosolal.web.portfolio/
+  description: This is a simple Job Portal server. You can visit the GitHub repository
+    at https://github.com/fazilnbr/FixItNow
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Go + Gin FixItNow API
+  version: "1.0"
 paths:
-  /refresh-tocken:
+  /refresh-token:
     get:
       operationId: Refresh token
       produces:
@@ -78,6 +88,24 @@ paths:
       tags:
       - User Authentication
   /user/profile:
+    get:
+      operationId: GetUserProfile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Get User Profile
+      tags:
+      - User Profile Management
     post:
       operationId: AddProfileAndUpdateMail
       parameters:
@@ -151,4 +179,9 @@ paths:
       summary: SignUp for users
       tags:
       - User Authentication
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

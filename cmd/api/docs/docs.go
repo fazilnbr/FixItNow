@@ -10,13 +10,21 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "contact": {
+            "name": "API Support",
+            "url": "https://fazilnbr.github.io/mypeosolal.web.portfolio/",
+            "email": "fazilkp2000@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/refresh-tocken": {
+        "/refresh-token": {
             "get": {
                 "security": [
                     {
@@ -79,6 +87,35 @@ const docTemplate = `{
             }
         },
         "/user/profile": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Profile Management"
+                ],
+                "summary": "Get User Profile",
+                "operationId": "GetUserProfile",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_fazilnbr_project-workey_pkg_utils.Response"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -252,17 +289,24 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "Go + Gin FixItNow API",
+	Description:      "This is a simple Job Portal server. You can visit the GitHub repository at https://github.com/fazilnbr/FixItNow",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

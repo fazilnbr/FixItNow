@@ -73,11 +73,10 @@ func (cr *middlewar) AthoriseJWT(c *gin.Context) {
 	user_email := fmt.Sprint(claims.UserName)
 	id := fmt.Sprint(claims.UserId)
 	fmt.Printf("\n\nid : %v\n\n", id)
-	// r.Header.Set("email", user_email)
+
 	c.Writer.Header().Set("email", user_email)
-	// r.Header.Set("id", id)
 	c.Writer.Header().Set("id", id)
-	// c.Next()
+
 }
 
 func NewUserMiddileware(jwtUserUseCase service.JWTUseCase) Middleware {

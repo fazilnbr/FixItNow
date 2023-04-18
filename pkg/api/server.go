@@ -37,7 +37,7 @@ func NewServerHTTP(authHandler handler.AuthHandler, adminHandler handler.AdminHa
 		user.GET("/callback-gl", authHandler.CallBackFromGoogle)
 
 		// Refresh Token
-		engine.GET("/refresh-tocken", authHandler.RefreshToken)
+		engine.GET("/refresh-token", authHandler.RefreshToken)
 
 		// Use Middileware
 		user.Use(middleware.AthoriseJWT)
