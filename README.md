@@ -1,5 +1,5 @@
 
-# propals
+# FixItNow
 This is a REST API Job Portal project for unorganized job sector
 
 
