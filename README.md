@@ -1,7 +1,7 @@
 
 # FixItNow
 This is a REST API Job Portal project for unorganized job sector
-
+User can directly connect with workers
 
 
 # Clean Architecture using Golang with Gin framework
