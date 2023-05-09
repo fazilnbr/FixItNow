@@ -12,6 +12,69 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestUserRepo_AddProfile(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("Failed to create mock DB: %v", err)
+	}
+	defer db.Close()
+
+	userRepo := repository.NewUserRepo(db)
+
+	mockQuery := "INSERT INTO profiles \\(user_id, first_name, last_name, gender, dob, profile_photo\\) VALUES \\(\\$1,\\$2,\\$3,\\$4,\\$5,\\$6\\) RETURNING id_profie;"
+	mockUserData := domain.UserData{
+		UserId:       0,
+		Email:        "",
+		FirstName:    "",
+		LastName:     "",
+		Gender:       "",
+		Dob:          "",
+		ProfilePhoto: "",
+	}
+
+	tests := []struct {
+		name          string
+		UserData      domain.UserData
+		mockQueryFunc func()
+		expectedErr   error
+	}{
+		{
+			name:     "test success adding profile",
+			UserData: mockUserData,
+			mockQueryFunc: func() {
+				mock.ExpectQuery(mockQuery).
+					WithArgs(mockUserData.UserId, mockUserData.FirstName, mockUserData.LastName, mockUserData.Gender, mockUserData.Dob, mockUserData.ProfilePhoto).
+					WillReturnRows(sqlmock.NewRows([]string{"id_profie"}).AddRow(1))
+			},
+			expectedErr: nil,
+		},
+		{
+			name:     "test there is no user with id",
+			UserData: mockUserData,
+			mockQueryFunc: func() {
+				mock.ExpectQuery(mockQuery).
+					WithArgs(mockUserData.UserId, mockUserData.FirstName, mockUserData.LastName, mockUserData.Gender, mockUserData.Dob, mockUserData.ProfilePhoto).
+					WillReturnRows(sqlmock.NewRows([]string{"id_profie"}).AddRow(0))
+			},
+			expectedErr: errors.New("Invalid User"),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.mockQueryFunc()
+			ctx := context.Background()
+
+			actualerr := userRepo.AddProfile(ctx, tt.UserData)
+
+			assert.Equal(t, tt.expectedErr, actualerr)
+
+			err = mock.ExpectationsWereMet()
+			assert.NoError(t, err)
+		})
+	}
+}
+
 func TestUserRepo_CreateUser(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
@@ -22,7 +85,7 @@ func TestUserRepo_CreateUser(t *testing.T) {
 	userRepo := repository.NewUserRepo(db)
 
 	mockQuery := "INSERT INTO users \\(phone,email,password,user_type,verification,status\\) VALUES\\(\\$1,\\$2,\\$3,\\$4,\\$5,\\$6\\) RETURNING id_user;"
-	mockUser:=domain.User{
+	mockUser := domain.User{
 		IdUser:       1,
 		Phone:        "",
 		Email:        "",
@@ -44,7 +107,7 @@ func TestUserRepo_CreateUser(t *testing.T) {
 			user: mockUser,
 			mockQueryFunc: func() {
 				mock.ExpectQuery(mockQuery).
-					WithArgs(mockUser.Phone,mockUser.Email,mockUser.Password,mockUser.UserType,mockUser.Verification,mockUser.Status).
+					WithArgs(mockUser.Phone, mockUser.Email, mockUser.Password, mockUser.UserType, mockUser.Verification, mockUser.Status).
 					WillReturnError(errors.New("db error"))
 			},
 			expectedId:  0,
@@ -55,7 +118,7 @@ func TestUserRepo_CreateUser(t *testing.T) {
 			user: mockUser,
 			mockQueryFunc: func() {
 				mock.ExpectQuery(mockQuery).
-					WithArgs(mockUser.Phone,mockUser.Email,mockUser.Password,mockUser.UserType,mockUser.Verification,mockUser.Status).
+					WithArgs(mockUser.Phone, mockUser.Email, mockUser.Password, mockUser.UserType, mockUser.Verification, mockUser.Status).
 					WillReturnRows(sqlmock.NewRows([]string{"id_user"}).AddRow(1))
 			},
 			expectedId:  1,
