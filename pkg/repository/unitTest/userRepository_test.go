@@ -12,6 +12,91 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestUserRepo_GetProfile(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("Failed to create mock DB: %v", err)
+	}
+	defer db.Close()
+
+	userRepo := repository.NewUserRepo(db)
+
+
+	rows := sqlmock.NewRows([]string{"id_profie", "user_id", "first_name", "last_name", "gender", "dob", "profile_photo"}).
+		AddRow(1,1 , "testuserfirstname", "testuserlastname", "testgender", "testuserdob", "testuserprofile_photo")
+	mockuserprofile:=domain.Profile{
+		IdProfie:     1,
+		UserId:       1,
+		FirstName:    "testuserfirstname",
+		LastName:     "testuserlastname",
+		Gender:       "testgender",
+		Dob:          "testuserdob",
+		ProfilePhoto: "testuserprofile_photo",
+	}
+
+	mockQuery := "SELECT id_profie,user_id,first_name,last_name,gender,dob,profile_photo FROM profiles WHERE user_id=\\$1;"
+
+	tests := []struct {
+		name          string
+		userId        int
+		mockQueryFunc func()
+		expectuserprofile domain.Profile
+		expectedErr   error
+	}{
+		{
+			name:   "test success geting profile",
+			userId: 1,
+
+			mockQueryFunc: func() {
+				mock.ExpectQuery(mockQuery).
+					WithArgs(1).
+					WillReturnRows(rows)
+			},
+			expectuserprofile: mockuserprofile,
+			expectedErr: nil,
+		},
+		{
+			name:   "test there is no user to select",
+			userId: 1,
+
+			mockQueryFunc: func() {
+				mock.ExpectQuery(mockQuery).
+					WithArgs(1).
+					WillReturnError(sql.ErrNoRows)
+			},
+			expectuserprofile: domain.Profile{},
+			expectedErr: errors.New("there is no user"),
+		},
+		{
+			name:   "test there is any db errors",
+			userId: 1,
+
+			mockQueryFunc: func() {
+				mock.ExpectQuery(mockQuery).
+					WithArgs(1).
+					WillReturnError(errors.New("db error"))
+			},
+			expectuserprofile: domain.Profile{},
+			expectedErr: errors.New("db error"),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.mockQueryFunc()
+			ctx := context.Background()
+
+			actualdata, actualerr := userRepo.GetProfile(ctx, tt.userId)
+
+			assert.Equal(t, tt.expectedErr, actualerr)
+			assert.Equal(t,tt.expectuserprofile,actualdata)
+
+			err = mock.ExpectationsWereMet()
+			assert.NoError(t, err)
+		})
+	}
+}
+
 func TestUserRepo_UpdateMail(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
