@@ -12,6 +12,63 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestUserRepo_UpdateMail(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("Failed to create mock DB: %v", err)
+	}
+	defer db.Close()
+
+	userRepo := repository.NewUserRepo(db)
+
+	mockQuery := "update users set email = \\$1 where id_user=\\$2 RETURNING id_user;"
+
+	tests := []struct {
+		name          string
+		mail          string
+		userId        int
+		mockQueryFunc func()
+		expectedErr   error
+	}{
+		{
+			name:   "test success adding profile",
+			mail:   "test@mail.com",
+			userId: 1,
+			mockQueryFunc: func() {
+				mock.ExpectQuery(mockQuery).
+					WithArgs("test@mail.com", 1).
+					WillReturnRows(sqlmock.NewRows([]string{"id_user"}).AddRow(1))
+			},
+			expectedErr: nil,
+		},
+		{
+			name:   "test there is no user with id",
+			mail:   "test@mail.com",
+			userId: 1,
+			mockQueryFunc: func() {
+				mock.ExpectQuery(mockQuery).
+					WithArgs("test@mail.com", 1).
+					WillReturnRows(sqlmock.NewRows([]string{"id_profie"}).AddRow(0))
+			},
+			expectedErr: errors.New("Invalid User"),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.mockQueryFunc()
+			ctx := context.Background()
+
+			actualerr := userRepo.UpdateMail(ctx, tt.mail, tt.userId)
+
+			assert.Equal(t, tt.expectedErr, actualerr)
+
+			err = mock.ExpectationsWereMet()
+			assert.NoError(t, err)
+		})
+	}
+}
+
 func TestUserRepo_AddProfile(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
