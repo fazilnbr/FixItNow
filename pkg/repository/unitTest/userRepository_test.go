@@ -12,6 +12,74 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestUserRepo_CreateUser(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("Failed to create mock DB: %v", err)
+	}
+	defer db.Close()
+
+	userRepo := repository.NewUserRepo(db)
+
+	mockQuery := "INSERT INTO users \\(phone,email,password,user_type,verification,status\\) VALUES\\(\\$1,\\$2,\\$3,\\$4,\\$5,\\$6\\) RETURNING id_user;"
+	mockUser:=domain.User{
+		IdUser:       1,
+		Phone:        "",
+		Email:        "",
+		Password:     "",
+		UserType:     "",
+		Verification: false,
+		Status:       "",
+	}
+
+	tests := []struct {
+		name          string
+		user          domain.User
+		mockQueryFunc func()
+		expectedId    int
+		expectedErr   error
+	}{
+		{
+			name: "test there is any db error ",
+			user: mockUser,
+			mockQueryFunc: func() {
+				mock.ExpectQuery(mockQuery).
+					WithArgs(mockUser.Phone,mockUser.Email,mockUser.Password,mockUser.UserType,mockUser.Verification,mockUser.Status).
+					WillReturnError(errors.New("db error"))
+			},
+			expectedId:  0,
+			expectedErr: errors.New("db error"),
+		},
+		{
+			name: "test success creating user",
+			user: mockUser,
+			mockQueryFunc: func() {
+				mock.ExpectQuery(mockQuery).
+					WithArgs(mockUser.Phone,mockUser.Email,mockUser.Password,mockUser.UserType,mockUser.Verification,mockUser.Status).
+					WillReturnRows(sqlmock.NewRows([]string{"id_user"}).AddRow(1))
+			},
+			expectedId:  1,
+			expectedErr: nil,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.mockQueryFunc()
+			ctx := context.Background()
+
+			actualId, actualerr := userRepo.CreateUser(ctx, tt.user)
+
+			assert.Equal(t, tt.expectedErr, actualerr)
+
+			assert.Equal(t, tt.expectedId, actualId)
+
+			err = mock.ExpectationsWereMet()
+			assert.NoError(t, err)
+		})
+	}
+}
+
 func TestUserRepo_FindUserWithNumber(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
@@ -92,7 +160,7 @@ func TestUserRepo_FindUserWithemail(t *testing.T) {
 	userRepo := repository.NewUserRepo(db)
 
 	rows := sqlmock.NewRows([]string{"id_user", "phone", "email", "password", "user_type", "verification", "status"}).
-		AddRow(0,  "phone", "jon@gmail.com", "password", "user_type", true, "status")
+		AddRow(0, "phone", "jon@gmail.com", "password", "user_type", true, "status")
 
 	tests := []struct {
 		name          string
